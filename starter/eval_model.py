@@ -1,19 +1,24 @@
 import joblib
 import pandas as pd
 from sklearn.model_selection import train_test_split
+from pathlib import Path
 
-from ml.data import process_data
-from ml.model import inference, compute_model_metrics
+from starter.ml.data import process_data
+from starter.ml.model import inference, compute_model_metrics
 
+# Define paths for data and model saving
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+DATA_PATH = PROJECT_ROOT / "data" / "census.csv"
+MODEL_PATH = PROJECT_ROOT / "model"
 
-model = joblib.load("../model/rfc_model.pkl")
-encoder = joblib.load("../model/encoder.pkl")
-lb = joblib.load("../model/lb.pkl")
+model = joblib.load(MODEL_PATH / "rfc_model.pkl")
+encoder = joblib.load(MODEL_PATH / "encoder.pkl")
+lb = joblib.load(MODEL_PATH / "lb.pkl")
 
 cat_features = ["workclass", "education", "marital-status", "occupation", "relationship", "race", "sex", "native-country"]
 
 # Add code to load in the data.
-data = pd.read_csv("../data/census.csv")
+data = pd.read_csv(DATA_PATH)
 data.columns = data.columns.str.strip()
 
 for column in data.select_dtypes(include="object").columns:
