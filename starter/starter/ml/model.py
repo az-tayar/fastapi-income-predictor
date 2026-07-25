@@ -1,4 +1,5 @@
-from sklearn.metrics import fbeta_score, precision_score, recall_score
+from sklearn.metrics import fbeta_score, precision_score, recall_score, accuracy_score
+from sklearn.ensemble import RandomForestClassifier
 
 
 def train_model(X_train, y_train):
@@ -16,7 +17,9 @@ def train_model(X_train, y_train):
     model : RandomForestClassifier
         Trained machine learning model.
     """
-    pass
+    model = RandomForestClassifier(n_estimators=200, max_depth=None, min_samples_split=2, min_samples_leaf=1, class_weight="balanced", random_state=42, n_jobs=-1,)
+    model.fit(X_train, y_train)
+    return model
 
 
 def compute_model_metrics(y, preds):
@@ -38,7 +41,8 @@ def compute_model_metrics(y, preds):
     fbeta = fbeta_score(y, preds, beta=1, zero_division=1)
     precision = precision_score(y, preds, zero_division=1)
     recall = recall_score(y, preds, zero_division=1)
-    return precision, recall, fbeta
+    accuracy = accuracy_score(y, preds)
+    return precision, recall, fbeta, accuracy
 
 
 def inference(model, X):
@@ -55,4 +59,4 @@ def inference(model, X):
     preds : np.ndarray
         Predictions from the model.
     """
-    pass
+    return model.predict(X)
