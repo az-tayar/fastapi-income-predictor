@@ -3,13 +3,17 @@ from fastapi import FastAPI
 from pydantic import BaseModel, Field
 import joblib
 import pandas as pd
+from pathlib import Path
 
 from starter.ml.data import process_data
 from starter.ml.model import inference
 
-model = joblib.load("model/rfc_model.pkl")
-encoder = joblib.load("model/encoder.pkl")
-lb = joblib.load("model/lb.pkl")
+PROJECT_ROOT = Path(__file__).resolve().parent
+MODEL_PATH = PROJECT_ROOT / "model"
+
+model = joblib.load(MODEL_PATH / "rfc_model.pkl")
+encoder = joblib.load(MODEL_PATH / "encoder.pkl")
+lb = joblib.load(MODEL_PATH / "lb.pkl")
 
 cat_features = ["workclass", "education", "marital-status", "occupation", "relationship", "race", "sex", "native-country"]
 
