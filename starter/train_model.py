@@ -3,7 +3,6 @@
 from sklearn.model_selection import train_test_split
 import pandas as pd
 import joblib
-import os
 from pathlib import Path
 
 # Add the necessary imports for the starter code.
