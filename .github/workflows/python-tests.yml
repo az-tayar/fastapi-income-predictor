@@ -3,8 +3,6 @@ name: Python-Tests
 on:
   push:
     branches: ["master"]
-  pull_request:
-    branches: ["master"]
 
 permissions:
   contents: read
@@ -28,6 +26,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install "dvc[s3]"
+
+      - name: Display GitHub OIDC claims
+        uses: github/actions-oidc-debugger@main
+        with:
+          audience: sts.amazonaws.com
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v5
