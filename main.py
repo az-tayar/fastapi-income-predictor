@@ -1,6 +1,6 @@
 # Put the code for your API here.
 from fastapi import FastAPI
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 import joblib
 import pandas as pd
 from pathlib import Path
@@ -20,6 +20,7 @@ cat_features = ["workclass", "education", "marital-status", "occupation", "relat
 app = FastAPI(title='Income Predictor API', description='Starter API for ML model deployment', version='1.0.0')
 
 class InputData(BaseModel):
+
     age: int
     workclass: str
     fnlgt: int
@@ -34,6 +35,30 @@ class InputData(BaseModel):
     capital_loss: int = Field(alias="capital-loss")
     hours_per_week: int = Field(alias="hours-per-week")
     native_country: str = Field(alias="native-country")
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+        json_schema_extra={
+            "examples": [
+                {
+                    "age": 37,
+                    "workclass": "Private",
+                    "fnlgt": 178356,
+                    "education": "HS-grad",
+                    "education-num": 9,
+                    "marital-status": "Married-civ-spouse",
+                    "occupation": "Craft-repair",
+                    "relationship": "Husband",
+                    "race": "White",
+                    "sex": "Male",
+                    "capital-gain": 0,
+                    "capital-loss": 0,
+                    "hours-per-week": 40,
+                    "native-country": "United-States",
+                }
+            ]
+        },
+    )
 
 class PredictionResponse(BaseModel):
     prediction: str
