@@ -40,5 +40,4 @@ Flask-Bootstrap==3.3.7.1
 python-multipart==0.0.20
 httplib2==0.31.0
 
-dvc
-dvc-s3
+dvc[s3]>=3,<4
