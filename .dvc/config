@@ -1,4 +1,4 @@
 [core]
-    remote = localstorage
-['remote "localstorage"']
-    url = /Users/atayar/Desktop/dvc-storage/fastapi-income-predictor
+    remote = s3_storage
+['remote "s3_storage"']
+    url = s3://az-tayar-fastapi-income-predictor-dvc-777825729606-us-east-2-an
