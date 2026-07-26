@@ -57,7 +57,7 @@ def evaluate_model(data, feature_name, feature_value):
         f"F-beta: {fbeta:.3f}\n"
         f"Accuracy: {accuracy:.3f}\n\n"
         )
-    
+
     with open(OUTPUT_FILE, "a") as f:
         f.write(output)
 
