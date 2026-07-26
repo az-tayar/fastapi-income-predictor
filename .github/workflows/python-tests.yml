@@ -3,6 +3,8 @@ name: Python-Tests
 on:
   push:
     branches: ["master"]
+  pull_request:
+    branches: ["master"]
 
 permissions:
   contents: read
@@ -27,16 +29,25 @@ jobs:
           pip install -r requirements.txt
           pip install "dvc[s3]"
 
+      - name: Verify AWS Role ARN
+        run: |
+          if [ -z "${{ vars.AWS_ROLE_ARN }}" ]; then
+            echo "AWS_ROLE_ARN variable is not set!"
+            exit 1
+          fi
+          echo "AWS_ROLE_ARN is configured."
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v5
         with:
           role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          role-session-name: GitHubActions-DVC
           aws-region: us-east-2
 
-      - name: Pull model files from S3
+      - name: Pull DVC models
         run: dvc pull
 
-      - name: Verify model files
+      - name: Verify downloaded models
         run: |
           ls -lah model
           test -f model/rfc_model.pkl
