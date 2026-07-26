@@ -10,6 +10,7 @@ from starter.ml.model import inference, compute_model_metrics
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DATA_PATH = PROJECT_ROOT / "data" / "census.csv"
 MODEL_PATH = PROJECT_ROOT / "model"
+OUTPUT_FILE = PROJECT_ROOT / "slice_output.txt"
 
 model = joblib.load(MODEL_PATH / "rfc_model.pkl")
 encoder = joblib.load(MODEL_PATH / "encoder.pkl")
@@ -48,15 +49,22 @@ def evaluate_model(data, feature_name, feature_value):
 
     precision, recall, fbeta, accuracy = compute_model_metrics(y_test, preds)
 
-    print(f"{'-'*150}")
-    print(f"Model evaluation for {feature_name} = {feature_value}:")
-    print(f"Precision: {precision:.3f}")
-    print(f"Recall: {recall:.3f}")
-    print(f"F-beta: {fbeta:.3f}")
-    print(f"Accuracy: {accuracy:.3f}")
+    output = (
+        f"{'-'*150}\n"
+        f"Model evaluation for {feature_name} = {feature_value}:\n"
+        f"Precision: {precision:.3f}\n"
+        f"Recall: {recall:.3f}\n"
+        f"F-beta: {fbeta:.3f}\n"
+        f"Accuracy: {accuracy:.3f}\n\n"
+        )
+    
+    with open(OUTPUT_FILE, "a") as f:
+        f.write(output)
 
 
 if __name__ == "__main__":
+
+    OUTPUT_FILE.write_text("")
 
     evaluate_model(data, "sex", "Female")
     evaluate_model(data, "sex", "Male")
