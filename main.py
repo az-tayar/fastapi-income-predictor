@@ -15,9 +15,21 @@ model = joblib.load(MODEL_PATH / "rfc_model.pkl")
 encoder = joblib.load(MODEL_PATH / "encoder.pkl")
 lb = joblib.load(MODEL_PATH / "lb.pkl")
 
-cat_features = ["workclass", "education", "marital-status", "occupation", "relationship", "race", "sex", "native-country"]
+cat_features = [
+    "workclass",
+    "education",
+    "marital-status",
+    "occupation",
+    "relationship",
+    "race",
+    "sex",
+    "native-country"]
 
-app = FastAPI(title='Income Predictor API', description='Starter API for ML model deployment', version='1.0.0')
+app = FastAPI(
+    title='Income Predictor API',
+    description='Starter API for ML model deployment',
+    version='1.0.0')
+
 
 class InputData(BaseModel):
 
@@ -60,8 +72,10 @@ class InputData(BaseModel):
         },
     )
 
+
 class PredictionResponse(BaseModel):
     prediction: str
+
 
 @app.get("/")
 async def root():
@@ -74,8 +88,10 @@ async def predict_income(input_data: InputData):
     input_dict = input_data.model_dump(by_alias=True)
     input_df = pd.DataFrame([input_dict])
 
-    # Process the input data using the same encoder and label binarizer used during training
-    X, _, _, _ = process_data(input_df, categorical_features=cat_features, training=False, encoder=encoder, lb=lb)
+    # Process the input data using the same encoder and label binarizer used
+    # during training
+    X, _, _, _ = process_data(
+        input_df, categorical_features=cat_features, training=False, encoder=encoder, lb=lb)
     prediction = inference(model, X)
     prediction_label = lb.inverse_transform(prediction)[0]
 

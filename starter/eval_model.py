@@ -15,7 +15,15 @@ model = joblib.load(MODEL_PATH / "rfc_model.pkl")
 encoder = joblib.load(MODEL_PATH / "encoder.pkl")
 lb = joblib.load(MODEL_PATH / "lb.pkl")
 
-cat_features = ["workclass", "education", "marital-status", "occupation", "relationship", "race", "sex", "native-country"]
+cat_features = [
+    "workclass",
+    "education",
+    "marital-status",
+    "occupation",
+    "relationship",
+    "race",
+    "sex",
+    "native-country"]
 
 # Add code to load in the data.
 data = pd.read_csv(DATA_PATH)
@@ -27,12 +35,15 @@ for column in data.select_dtypes(include="object").columns:
 
 def evaluate_model(data, feature_name, feature_value):
 
-    _, test = train_test_split(data, test_size=0.20, random_state=42, stratify=data["salary"])
+    _, test = train_test_split(
+        data, test_size=0.20, random_state=42, stratify=data["salary"])
 
     test_sliced = test[test[feature_name] == feature_value]
 
-    # Process the input data using the same encoder and label binarizer used during training
-    X_test, y_test, _, _ = process_data(test_sliced, categorical_features=cat_features, label="salary", training=False, encoder=encoder, lb=lb)
+    # Process the input data using the same encoder and label binarizer used
+    # during training
+    X_test, y_test, _, _ = process_data(
+        test_sliced, categorical_features=cat_features, label="salary", training=False, encoder=encoder, lb=lb)
     preds = inference(model, X_test)
 
     precision, recall, fbeta, accuracy = compute_model_metrics(y_test, preds)
@@ -52,8 +63,3 @@ if __name__ == "__main__":
 
     evaluate_model(data, "race", "White")
     evaluate_model(data, "race", "Black")
-
-
-
-
-    

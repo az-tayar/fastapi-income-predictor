@@ -22,8 +22,10 @@ data.columns = data.columns.str.strip()
 for column in data.select_dtypes(include="object").columns:
     data[column] = data[column].str.strip()
 
-# Optional enhancement, use K-fold cross validation instead of a train-test split.
-train, test = train_test_split(data, test_size=0.20, random_state=42, stratify=data["salary"])
+# Optional enhancement, use K-fold cross validation instead of a
+# train-test split.
+train, test = train_test_split(
+    data, test_size=0.20, random_state=42, stratify=data["salary"])
 
 cat_features = [
     "workclass",

@@ -40,3 +40,4 @@ python-multipart==0.0.20
 httplib2==0.31.0
 
 dvc[s3]>=3,<4
+flake8

@@ -3,11 +3,13 @@ from main import app
 
 client = TestClient(app)
 
+
 def test_root():
     r = client.get("/")
 
     assert r.status_code == 200
-    assert r.json() == {"message": "Welcome to the Income Predictor API. Use the /predict endpoint to get income predictions."}
+    assert r.json() == {
+        "message": "Welcome to the Income Predictor API. Use the /predict endpoint to get income predictions."}
 
 
 def test_predict_income_1():
